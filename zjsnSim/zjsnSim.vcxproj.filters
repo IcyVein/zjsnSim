@@ -24,12 +24,30 @@
     <ClCompile Include="Equip.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Fleet.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Combat.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Defines.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ship.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Equip.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Fleet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Combat.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
