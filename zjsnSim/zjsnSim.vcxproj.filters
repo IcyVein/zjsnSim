@@ -15,15 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SHIP.cpp">
+    <ClCompile Include="zjsnSim.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="zjsnSim.cpp">
+    <ClCompile Include="Ship.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Equip.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SHIP.h">
+    <ClInclude Include="Ship.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Equip.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
