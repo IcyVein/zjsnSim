@@ -64,6 +64,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SHIP.cpp" />
+    <ClCompile Include="zjsnSim.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SHIP.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
