@@ -12,6 +12,42 @@ using namespace std;
 
 Ship::Ship()
 {
+    no = 0;
+    name = "нч";
+    type = 0;
+    maxHP = 0;
+    speed = 0;
+    range = 0;
+    equipSlot = 0;
+
+    firePower = 0;
+    torpedo = 0;
+    bomb = 0;
+    armor = 0;
+    antiAircraft = 0;
+    accurate = 90;
+    dodge = 0;
+    antiSubmarine = 0;
+    toss = 0;
+    lucky = 0;
+
+    ammunition = 0;
+    oil = 0;
+    capacity[0] = 0;
+    for (int i = 1; i < 5; i++)
+        capacity[i] = 0;
+
+    crit = 0.05;
+    critDamageMod = 1.50;
+    pierce = 0.0;
+
+    attackAmount = 1;
+    randModMin = 0.89;
+    randModMax = 1.22;
+
+    currHP = 0;
+    currAmmunition = 0;
+    currOil = 0;
 }
 
 Ship::Ship(int _no, string _name, int _type, int _maxHP, double _speed, int _range, int _equipSlot,
@@ -28,8 +64,10 @@ Ship::Ship(int _no, string _name, int _type, int _maxHP, double _speed, int _ran
 
     firePower = _firePower;
     torpedo = _torpedo;
+    bomb = 0;
     armor = _armor;
     antiAircraft = _antiAircraft;
+    accurate = 90;
     dodge = _dodge;
     antiSubmarine = _antiSubmarine;
     toss = _toss;
@@ -38,11 +76,8 @@ Ship::Ship(int _no, string _name, int _type, int _maxHP, double _speed, int _ran
     ammunition = _ammunition;
     oil = _oil;
     capacity[0] = _capacity[0];
-    if (capacity[0] != 0 && (type == 1 || type == 2)) // CV|Cvl
-    {
-        for (int i = 1; i < 5; i++)
-            capacity[i] = _capacity[i];
-    }
+    for (int i = 1; i < 5; i++)
+        capacity[i] = _capacity[i];
 
     crit = 0.05;
     critDamageMod = 1.50;
@@ -73,8 +108,10 @@ Ship Ship::operator=(Ship currShip)
 
     firePower = currShip.firePower;
     torpedo = currShip.torpedo;
+    bomb = currShip.bomb;
     armor = currShip.armor;
     antiAircraft = currShip.antiAircraft;
+    accurate = currShip.accurate;
     dodge = currShip.dodge;
     antiSubmarine = currShip.antiSubmarine;
     toss = currShip.toss;
@@ -83,11 +120,8 @@ Ship Ship::operator=(Ship currShip)
     ammunition = currShip.ammunition;
     oil = currShip.oil;
     capacity[0] = currShip.capacity[0];
-    if (capacity[0] != 0 && (type == 1 || type == 2)) // CV|Cvl
-    {
-        for (int i = 1; i < 5; i++)
-            capacity[i] = currShip.capacity[i];
-    }
+    for (int i = 1; i < 5; i++)
+        capacity[i] = currShip.capacity[i];
 
     crit = currShip.crit;
     critDamageMod = currShip.critDamageMod;
@@ -150,11 +184,34 @@ int Ship::showShip()
 int Ship::showShip(ofstream& outputFile)
 {
     outputFile << no << " " << name << " " << type << " " << currHP << "/" << maxHP << " " << speed << " " << range << " " << equipSlot << " "
-        << firePower << " " << torpedo << " " << armor << " " << antiAircraft << " " << dodge << " " << antiSubmarine << " " << toss << " " << lucky << " "
+        << firePower << " " << torpedo << " " << armor << " " << antiAircraft << " " << accurate << " " << dodge << " " << antiSubmarine << " " << toss << " " << lucky << " "
         << ammunition << " " << oil << " " 
-        << capacity[0] << " " << capacity[1] << " " << capacity[2] << " " << capacity[3] << " " << capacity[4];
+        << capacity[0] << " " << capacity[1] << " " << capacity[2] << " " << capacity[3] << " " << capacity[4] << " " 
+        << pierce;
 
     outputFile << endl;
+    return 0;
+}
+
+int Ship::loadEquip(Equip equip)
+{
+    range = fmax(range, equip.range);
+
+    firePower += equip.firePower;
+    torpedo += equip.torpedo;
+    bomb += equip.bomb;
+    armor += equip.armor;
+
+    antiAircraft += equip.antiAircraft;
+    dodge += equip.dodge;
+    accurate += equip.accurate;
+    antiSubmarine += equip.antiSubmarine;
+
+    toss += equip.toss;
+    lucky += equip.lucky;
+
+    pierce += equip.pierce;
+
     return 0;
 }
 

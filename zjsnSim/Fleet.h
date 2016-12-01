@@ -14,6 +14,9 @@ public:
 
     int showFleet();
     int showFleet(ofstream& outputFile);
+
+    int loadEquip(int fleetEquip[][4], Equip* equipList);
+
     int checkAlive();
     int checkFireAble(STAGE stage);
 public:

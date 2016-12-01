@@ -18,6 +18,8 @@ public:
     int showShip();
     int showShip(ofstream& outputFile);
 
+    int loadEquip(Equip equip);
+
     int getAttackAmount(STAGE stage);
     double getAttackPower(STAGE stage);
 
@@ -33,8 +35,10 @@ public:
 
     int firePower;
     int torpedo;
+    int bomb;
     int armor;
     int antiAircraft;
+    int accurate;
     int dodge;
     int antiSubmarine;
     int toss;

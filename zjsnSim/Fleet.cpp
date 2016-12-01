@@ -42,6 +42,21 @@ int Fleet::showFleet(ofstream& outputFile)
     {
         ship[i].showShip(outputFile);
     }
+
+    outputFile << endl;
+    return 0;
+}
+
+int Fleet::loadEquip(int fleetEquip[][4], Equip* equipList)
+{
+    for (int i = 0; i < shipAmountOrg; i++)
+    {
+        for (int j = 0; j < ship[i].equipSlot; j++)
+        {
+            ship[i].loadEquip(equipList[fleetEquip[i][j]]);
+        }
+    }
+
     return 0;
 }
 

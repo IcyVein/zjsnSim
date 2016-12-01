@@ -75,14 +75,16 @@ STAGE Combat::Shell_1()
         if (myFleet->fireAble[setAttackShip(i, myFleet)-1] == 1) // 选择我方开火舰船并检查是否能够开火
         {
             setDefenseShip(attackShip->getAttackAmount(stage), opFleet);
-            critRate = attackShip->crit + formationCritMod(myFormation) + formationCritMod(opFormation);
-            if (randR() <= critRate)
-                critMod = attackShip->critDamageMod;
-            else
-                critMod = 1.0;
-            attackPower = attackShip->getAttackPower(stage)*courseMod*myFormationMod*critMod;
             for (int j = 0; j < defenseShipAmount; j++)
             {
+                if (checkHit(*attackShip, *defenseShip[j]) == false) // 未命中
+                    continue;
+                critRate = attackShip->crit + formationCritMod(myFormation) + formationCritMod(opFormation);
+                if (randR() <= critRate)
+                    critMod = attackShip->critDamageMod;
+                else
+                    critMod = 1.0;
+                attackPower = attackShip->getAttackPower(stage)*courseMod*myFormationMod*critMod;
                 armorPower = defenseShip[j]->armor * (1.0 - attackShip->pierce);
                 damageOrg = damage(attackPower, armorPower);
                 employDamageToEnemy(damageOrg, defenseShip[j]);
@@ -100,11 +102,7 @@ STAGE Combat::Shell_1()
         if (opFleet->fireAble[setAttackShip(i, opFleet)-1] == 1) // 选择敌方开火舰船并检查是否能够开火
         {
             setDefenseShip(attackShip->getAttackAmount(stage), myFleet);
-            critRate = attackShip->crit + formationCritMod(myFormation) + formationCritMod(opFormation);
-            if (randR() <= critRate)
-                critMod = attackShip->critDamageMod;
-            else
-                critMod = 1.0;
+            
             if (course == TADV)// 计算航向修正
             {
                 courseMod = 0.65;
@@ -113,9 +111,16 @@ STAGE Combat::Shell_1()
             {
                 courseMod = 1.15;
             }
-            attackPower = attackShip->getAttackPower(stage)*courseMod*opFormationMod*critMod;
             for (int j = 0; j < defenseShipAmount; j++)
             {
+                if (checkHit(*attackShip, *defenseShip[j]) == false) // 未命中
+                    continue;
+                critRate = attackShip->crit + formationCritMod(myFormation) + formationCritMod(opFormation);
+                if (randR() <= critRate)
+                    critMod = attackShip->critDamageMod;
+                else
+                    critMod = 1.0;
+                attackPower = attackShip->getAttackPower(stage)*courseMod*opFormationMod*critMod;
                 armorPower = defenseShip[j]->armor * (1.0 - attackShip->pierce);
                 damageOrg = damage(attackPower, armorPower);
                 employDamageToMy(damageOrg, defenseShip[j]);
@@ -144,14 +149,16 @@ STAGE Combat::Shell_2()
         if (myFleet->fireAble[setAttackShip(i, myFleet) - 1] == 1) // 选择我方开火舰船并检查是否能够开火
         {
             setDefenseShip(attackShip->getAttackAmount(stage), opFleet);
-            critRate = attackShip->crit + formationCritMod(myFormation) + formationCritMod(opFormation);
-            if (randR() <= critRate)
-                critMod = attackShip->critDamageMod;
-            else
-                critMod = 1.0;
-            attackPower = attackShip->getAttackPower(stage)*courseMod*myFormationMod*critMod;
             for (int j = 0; j < defenseShipAmount; j++)
             {
+                if (checkHit(*attackShip, *defenseShip[j]) == false) // 未命中
+                    continue;
+                critRate = attackShip->crit + formationCritMod(myFormation) + formationCritMod(opFormation);
+                if (randR() <= critRate)
+                    critMod = attackShip->critDamageMod;
+                else
+                    critMod = 1.0;
+                attackPower = attackShip->getAttackPower(stage)*courseMod*myFormationMod*critMod;
                 armorPower = defenseShip[j]->armor * (1.0 - attackShip->pierce);
                 damageOrg = damage(attackPower, armorPower);
                 employDamageToEnemy(damageOrg, defenseShip[j]);
@@ -169,11 +176,7 @@ STAGE Combat::Shell_2()
         if (opFleet->fireAble[setAttackShip(i, opFleet) - 1] == 1) // 选择敌方开火舰船并检查是否能够开火
         {
             setDefenseShip(attackShip->getAttackAmount(stage), myFleet);
-            critRate = attackShip->crit + formationCritMod(myFormation) + formationCritMod(opFormation);
-            if (randR() <= critRate)
-                critMod = attackShip->critDamageMod;
-            else
-                critMod = 1.0;
+
             if (course == TADV)// 计算航向修正
             {
                 courseMod = 0.65;
@@ -182,9 +185,16 @@ STAGE Combat::Shell_2()
             {
                 courseMod = 1.15;
             }
-            attackPower = attackShip->getAttackPower(stage)*courseMod*opFormationMod*critMod;
             for (int j = 0; j < defenseShipAmount; j++)
             {
+                if (checkHit(*attackShip, *defenseShip[j]) == false) // 未命中
+                    continue;
+                critRate = attackShip->crit + formationCritMod(myFormation) + formationCritMod(opFormation);
+                if (randR() <= critRate)
+                    critMod = attackShip->critDamageMod;
+                else
+                    critMod = 1.0;
+                attackPower = attackShip->getAttackPower(stage)*courseMod*opFormationMod*critMod;
                 armorPower = defenseShip[j]->armor * (1.0 - attackShip->pierce);
                 damageOrg = damage(attackPower, armorPower);
                 employDamageToMy(damageOrg, defenseShip[j]);
@@ -236,6 +246,24 @@ int Combat::setDefenseShip(int attackAmount, Fleet* fleet)
     }
 
     return 0;
+}
+
+bool Combat::checkHit(Ship aShip, Ship dShip)
+// 根据命中和闪避之差计算
+// 设命中闪避之差为x，实际命中率为y，则有经验命中率公式 v1.0：
+// y = x^3 / 3 / 45^2 + x/2 + 50
+// 当x——[-50, 50]时，y——[5, 95]
+// 且dy/dx = x^2 / 45^2 +0.5，
+// 满足dy/dx——[0.5, 2]
+{
+    int trueAccutate = aShip.accurate - dShip.dodge;
+    double hitRate = pow(trueAccutate, 3) / 3 / 45 / 45 + trueAccutate / 2 + 50; // 经验命中率公式 v1.0
+    hitRate = fmax(hitRate, 0.05);
+    hitRate = fmin(hitRate, 0.95);
+    if (randR() < hitRate)
+        return true;
+    else
+        return false;
 }
 
 double Combat::damage(double attackPower, double armor)

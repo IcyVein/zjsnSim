@@ -22,6 +22,7 @@ public:
 
     int setAttackShip(int, Fleet*);
     int setDefenseShip(int, Fleet*);
+    bool checkHit(Ship aShip, Ship dShip);
 
     double damage(double attackPower, double armor);
     int employDamageToEnemy(double damageOrg, Ship* target);
