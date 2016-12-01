@@ -1,5 +1,15 @@
 #pragma once
-static unsigned int times = 0;
+#include <ctime>
+#include <cmath>
+#include <cstdlib>
+#include <iostream>
+#include <fstream>
+#include "Defines.h"
+
+using namespace std;
+
+extern unsigned int times;
+
 enum STAGE
 {
     BUFF, AIR, ANTISUB, SHELL_1, SHELL_2, TORPEDO, NIGHT, END

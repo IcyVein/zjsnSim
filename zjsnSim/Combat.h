@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdlib>
 #include "Defines.h"
 #include "Fleet.h"
 #include "Ship.h"
@@ -7,8 +8,8 @@
 class Combat
 {
 public:
-    Combat();
-    Combat(Fleet* _myFleet, Fleet* _opFleet, bool _PVEProtect);
+    Combat(ofstream& _combatLog);
+    Combat(Fleet* _myFleet, Fleet* _opFleet, bool _PVEProtect, ofstream& _combatLog);
     ~Combat();
 
     int Combating();
@@ -19,6 +20,8 @@ public:
     STAGE Shell_2();
     STAGE Torpedo();
     STAGE Night();
+    int Results();
+    double resultsBar(Fleet* fleet);
 
     int setAttackShip(int, Fleet*);
     int setDefenseShip(int, Fleet*);
@@ -31,6 +34,8 @@ public:
     Fleet* myFleet;
     Fleet* opFleet;
     bool PVEProtect;
+
+    ofstream& combatLog;
 private:
     STAGE stage;
     COURSE course;

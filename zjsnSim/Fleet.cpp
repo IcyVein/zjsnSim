@@ -1,3 +1,4 @@
+#pragma once
 #include "Fleet.h"
 #include <iostream>
 #include <fstream>

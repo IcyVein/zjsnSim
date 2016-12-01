@@ -2,9 +2,12 @@
 #include <ctime>
 #include <cmath>
 #include <cstdlib>
+#include <iostream>
 #include "Defines.h"
 
 using namespace std;
+
+unsigned int times = 0;
 
 double courseCoef(COURSE course)
 {
@@ -94,7 +97,7 @@ double formationCritMod(FORMATION formation)
         return 0.0;
         break;
     case TRAPEZOID:
-        return 20.0;
+        return 0.20;
         break;
     case HORIZONTAL:
         return 0.0;
@@ -122,7 +125,10 @@ int foundRandOrder(int amount, int* ans, int repeat)
 }
 
 double randR(double _min, double _max)
+// 生成[_min, _max]的均匀分布，已验证其随机性
 {
-    srand(time(NULL) + times++);
-    return rand() / (double)RAND_MAX * (_max - _min) + _min;
+    times++;
+    int luckNum = 100;
+    srand(time(NULL) % luckNum + times);
+    return (rand() % luckNum) / (double)luckNum * (_max - _min) + _min;
 }
