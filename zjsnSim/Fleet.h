@@ -1,5 +1,10 @@
 #pragma once
+#include <fstream>
+#include "Defines.h"
 #include "Ship.h"
+
+using namespace std;
+
 class Fleet
 {
 public:
@@ -8,9 +13,16 @@ public:
     ~Fleet();
 
     int showFleet();
+    int showFleet(ofstream& outputFile);
+    int checkAlive();
+    int checkFireAble(STAGE stage);
 public:
     int shipAmount;
+    int shipAmountOrg;
     int shipNo[6];
     Ship ship[6];
+
+    int alive[6];
+    int fireAble[6];
 };
 

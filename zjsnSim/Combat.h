@@ -1,6 +1,7 @@
 #pragma once
 #include "Defines.h"
 #include "Fleet.h"
+#include "Ship.h"
 
 
 class Combat
@@ -18,6 +19,13 @@ public:
     STAGE Shell_2();
     STAGE Torpedo();
     STAGE Night();
+
+    int setAttackShip(int, Fleet*);
+    int setDefenseShip(int, Fleet*);
+
+    double damage(double attackPower, double armor);
+    int employDamageToEnemy(double damageOrg, Ship* target);
+    int employDamageToMy(double damageOrg, Ship* target);
 public:
     Fleet* myFleet;
     Fleet* opFleet;
@@ -25,8 +33,14 @@ public:
 private:
     STAGE stage;
     COURSE course;
-    FORMATION formation;
+    FORMATION myFormation;
+    FORMATION opFormation;
     bool toss;
     AIRCONTROL airControl;
+
+    Ship* attackShip;
+    Ship* defenseShip[3];
+    int defenseShipAmount;
 };
 
+int foundRandOrder(int amount, int* ans, int repeat = 10);

@@ -1,19 +1,27 @@
+#pragma once
+static unsigned int times = 0;
 enum STAGE
 {
-    Buff, Air, AntiSub, Shell_1, Shell_2, Torpedo, Night
+    BUFF, AIR, ANTISUB, SHELL_1, SHELL_2, TORPEDO, NIGHT, END
 };
 
 enum COURSE
 {
-    TAdv, InSame, InReverse, TDisadv
+    TADV, INSAME, INREVERSE, TDISADV
 };
+double courseCoef(COURSE course);
 
 enum FORMATION
 {
-    single, complex, wheel, trapezoid, horizontal
+    SINGLE, COMPLEX, WHEEL, TRAPEZOID, HORIZONTAL
 };
+double formationCoef(FORMATION formation, STAGE stage);
+double formationCritMod(FORMATION formation);
 
 enum AIRCONTROL
 {
-    Ensure, Adv, Disadv
+    ENSURE, ADV, DISADV
 };
+
+int foundRandOrder(int amount, int* ans, int repeat);
+double randR(double _min = 0.0, double _max = 1.0);

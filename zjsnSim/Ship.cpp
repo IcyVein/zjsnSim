@@ -1,8 +1,12 @@
+#pragma once
 #include <string>
 #include <fstream>
 #include <iostream>
+#include "Combat.h"
+#include "Defines.h"
 #include "Ship.h"
 #include "Equip.h"
+#include <ctime>
 
 using namespace std;
 
@@ -39,6 +43,14 @@ Ship::Ship(int _no, string _name, int _type, int _maxHP, double _speed, int _ran
         for (int i = 1; i < 5; i++)
             capacity[i] = _capacity[i];
     }
+
+    crit = 0.05;
+    critDamageMod = 1.50;
+    pierce = 0.0;
+
+    attackAmount = 1;
+    randModMin = 0.89;
+    randModMax = 1.22;
 
     currHP = _maxHP;
     currAmmunition = _ammunition;
@@ -77,6 +89,13 @@ Ship Ship::operator=(Ship currShip)
             capacity[i] = currShip.capacity[i];
     }
 
+    crit = currShip.crit;
+    critDamageMod = currShip.critDamageMod;
+    pierce = currShip.pierce;
+    attackAmount = currShip.attackAmount;
+    randModMin = currShip.randModMin;
+    randModMax = currShip.randModMax;
+
     currHP = currShip.currHP;
     currAmmunition = currShip.currAmmunition;
     currOil = currShip.currOil;
@@ -91,17 +110,27 @@ int loadShipList(string shipListPath, Ship* ship)
     {
         shipListFile >> currShip.no >> currShip.name >> currShip.type >> currShip.maxHP >> currShip.speed >> currShip.range >> currShip.equipSlot
             >> currShip.firePower >> currShip.torpedo >> currShip.armor >> currShip.antiAircraft >> currShip.dodge >> currShip.antiSubmarine >> currShip.toss >> currShip.lucky
-            >> currShip.ammunition >> currShip.oil >> currShip.capacity[0];
+            >> currShip.ammunition >> currShip.oil 
+            >> currShip.capacity[0] >> currShip.capacity[1] >> currShip.capacity[2] >> currShip.capacity[3] >> currShip.capacity[4];
+
+        currShip.crit = 0.05;
+        currShip.critDamageMod = 1.50;
+        currShip.pierce = 0.0;
+        currShip.attackAmount = 1;
+        currShip.randModMin = 0.89;
+        currShip.randModMax = 1.22;
+
         currShip.currHP = currShip.maxHP;
         currShip.currAmmunition = currShip.ammunition;
         currShip.currOil = currShip.oil;
-        if (currShip.capacity[0] != 0 && (currShip.type == 1 || currShip.type == 2)) // CV|Cvl
-        {
-            for (int i = 1; i < 5; i++)
-                shipListFile >> currShip.capacity[i];
-        }
+        //if (currShip.capacity[0] != 0 && (currShip.type == 1 || currShip.type == 2)) // CV|Cvl
+        //{
+        //    for (int i = 1; i < 5; i++)
+        //        shipListFile >> currShip.capacity[i];
+        //}
         ship[currShip.no] = currShip;
     }
+    shipListFile.close();
     return 0;
 }
 
@@ -116,4 +145,31 @@ int Ship::showShip()
     }
     cout << endl;
     return 0;
+}
+
+int Ship::showShip(ofstream& outputFile)
+{
+    outputFile << no << " " << name << " " << type << " " << currHP << "/" << maxHP << " " << speed << " " << range << " " << equipSlot << " "
+        << firePower << " " << torpedo << " " << armor << " " << antiAircraft << " " << dodge << " " << antiSubmarine << " " << toss << " " << lucky << " "
+        << ammunition << " " << oil << " " 
+        << capacity[0] << " " << capacity[1] << " " << capacity[2] << " " << capacity[3] << " " << capacity[4];
+
+    outputFile << endl;
+    return 0;
+}
+
+int Ship::getAttackAmount(STAGE stage)
+{
+    return 1;
+}
+
+double Ship::getAttackPower(STAGE stage)
+{
+    double attackPower = 0;
+    double hpMod = 1.0;
+    double ammunitionMod = 1.0;
+    double randMod = randR(randModMin, randModMax);
+    attackPower = (firePower + 5)*hpMod*ammunitionMod*randMod;
+
+    return attackPower;
 }

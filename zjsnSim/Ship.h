@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <fstream>
+#include "Defines.h"
 #include "Equip.h"
 
 using namespace std;
@@ -14,9 +16,13 @@ public:
     ~Ship();
     Ship operator=(Ship currShip);
     int showShip();
+    int showShip(ofstream& outputFile);
+
+    int getAttackAmount(STAGE stage);
+    double getAttackPower(STAGE stage);
 
     friend int loadShipList(string shipListPath, Ship* ship);
-private:
+public:
     int no;
     string name;
     int type;
@@ -37,10 +43,17 @@ private:
     int ammunition;
     int oil;
     int capacity[5];
+
+    int attackAmount;
+    double randModMin;
+    double randModMax;
 public:
     int currHP;
     int currAmmunition;
     int currOil;
+    double crit;
+    double critDamageMod;
+    double pierce;
     Equip equip[4];
 };
 
