@@ -78,6 +78,17 @@
     <ClInclude Include="Fleet.h" />
     <ClInclude Include="Ship.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\data\config.txt" />
+    <Text Include="..\data\myEquipList.txt" />
+    <Text Include="..\data\myShipList.txt" />
+    <Text Include="..\data\opEquipList.txt" />
+    <Text Include="..\data\opShipList.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\data\equip list.xlsx" />
+    <None Include="..\data\ship list.xlsx" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

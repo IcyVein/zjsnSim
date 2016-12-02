@@ -62,7 +62,7 @@ STAGE Combat::AntiSub()
     return stage;
 }
 
-STAGE Combat::Shell_1()
+int Combat::shell()
 {
     double attackPower = 0.0;
     double armorPower = 0.0;
@@ -156,103 +156,20 @@ STAGE Combat::Shell_1()
         }
     }
 
+    return 0;
+}
+
+STAGE Combat::Shell_1()
+{
+    shell();
+
     stage = SHELL_2;
     return stage;
 }
 
 STAGE Combat::Shell_2()
 {
-    double attackPower = 0.0;
-    double armorPower = 0.0;
-    double critRate = 0.0;
-    double critMod = 1.0;
-    double courseMod = courseCoef(course);
-    double myFormationMod = formationCoef(myFormation, stage);
-    double opFormationMod = formationCoef(opFormation, stage);
-    double damageOrg = 0.0;
-    for (int i = 0; i < 6; i++)
-    {
-        // 我方attack
-        if (myFleet->fireAble[setAttackShip(i, myFleet) - 1] == 1) // 选择我方开火舰船并检查是否能够开火
-        {
-            setDefenseShip(attackShip->getAttackAmount(stage), opFleet);
-            for (int j = 0; j < defenseShipAmount; j++)
-            {
-                //combatLog << "Shell 2 (My): " << attackShip->name << "attack" << defenseShip[j]->name;
-                if (checkHit(*attackShip, *defenseShip[j]) == false) // miss
-                {
-                    //combatLog << "miss" << endl;
-                    continue;
-                }
-                critRate = attackShip->crit + formationCritMod(myFormation) + formationCritMod(opFormation);
-                if (randR() <= critRate)
-                {
-                    critMod = attackShip->critDamageMod;
-                    //combatLog << "crit";
-                }
-                else
-                {
-                    critMod = 1.0;
-                    //combatLog << "hit";
-                }
-                attackPower = attackShip->getAttackPower(stage)*courseMod*myFormationMod*critMod;
-                armorPower = defenseShip[j]->armor * (1.0 - attackShip->pierce);
-                damageOrg = damage(attackPower, armorPower);
-                int tempHP = defenseShip[j]->currHP;
-                employDamageToEnemy(damageOrg, defenseShip[j]);
-                //combatLog << damageOrg << "( " << tempHP << "-->" << defenseShip[j]->currHP << " )" << endl;
-            }
-            opFleet->checkFireAble(stage);
-            opFleet->checkAlive();
-            if (opFleet->shipAmount == 0)
-            {
-                stage = END;
-                return stage;
-            }
-        }
-
-        // 敌方attack
-        if (opFleet->fireAble[setAttackShip(i, opFleet) - 1] == 1) // 选择敌方开火舰船并检查是否能够开火
-        {
-            setDefenseShip(attackShip->getAttackAmount(stage), myFleet);
-
-            if (course == TADV)// 计算航向修正
-            {
-                courseMod = 0.65;
-            }
-            else if (course == TDISADV)
-            {
-                courseMod = 1.15;
-            }
-            for (int j = 0; j < defenseShipAmount; j++)
-            {
-                //combatLog << "Shell 2 (Op): " << attackShip->name << "attack" << defenseShip[j]->name;
-                if (checkHit(*attackShip, *defenseShip[j]) == false) // miss
-                {
-                    //combatLog << "miss" << endl;
-                    continue;
-                }
-                critRate = attackShip->crit + formationCritMod(myFormation) + formationCritMod(opFormation);
-                if (randR() <= critRate)
-                {
-                    critMod = attackShip->critDamageMod;
-                    //combatLog << "crit";
-                }
-                else
-                {
-                    critMod = 1.0;
-                    //combatLog << "hit";
-                }
-                attackPower = attackShip->getAttackPower(stage)*courseMod*opFormationMod*critMod;
-                armorPower = defenseShip[j]->armor * (1.0 - attackShip->pierce);
-                damageOrg = damage(attackPower, armorPower);
-                int tempHP = defenseShip[j]->currHP;
-                employDamageToMy(damageOrg, defenseShip[j]);
-                //combatLog << damageOrg << "( " << tempHP << "-->" << defenseShip[j]->currHP << " )" << endl;
-            }
-            myFleet->checkFireAble(stage);
-        }
-    }
+    shell();
 
     stage = TORPEDO;
     return stage;
@@ -266,6 +183,8 @@ STAGE Combat::Torpedo()
 
 STAGE Combat::Night()
 {
+    shell();
+
     stage = END;
     return stage;
 }
@@ -277,7 +196,7 @@ int Combat::setAttackShip(int rounds, Fleet* fleet)
     int* order;
     if (stage == SHELL_1)
     {
-        order = order1;
+        order = order2;
     }
     else
         order = order2;
@@ -317,7 +236,7 @@ bool Combat::checkHit(Ship aShip, Ship dShip)
 // 满足dy/dx——[0.5, 2]
 {
     int trueAccutate = aShip.accurate - dShip.dodge;
-    double hitRate = pow(trueAccutate, 3) / 3 / 45 / 45 + trueAccutate / 2 + 50; // 经验命中率公式 v1.0
+    double hitRate = ( pow(trueAccutate, 3) / 3.0 / 45 / 45 + trueAccutate / 2.0 + 50.0 ) / 100.0; // 经验命中率公式 v1.0
     hitRate = fmax(hitRate, 0.05);
     hitRate = fmin(hitRate, 0.95);
     if (randR() < hitRate)

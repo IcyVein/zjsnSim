@@ -1,0 +1,21 @@
+50000
+E:\wangmeng\work\MyProject\zjsnSim\data\myShipList.txt
+E:\wangmeng\work\MyProject\zjsnSim\data\myEquipList.txt
+E:\wangmeng\work\MyProject\zjsnSim\data\opShipList.txt
+E:\wangmeng\work\MyProject\zjsnSim\data\myEquipList.txt
+E:\wangmeng\work\MyProject\zjsnSim\data\output.txt
+6
+1001 50 35 35 35 130
+1001 50 35 35 35 130
+1001 50 35 35 35 130
+1001 50 35 35 35 130
+1001 50 35 35 35 130
+1001 50 35 35 35 130
+6
+1 50 35 35 35 130
+1 50 35 35 35 130
+1 50 35 35 35 130
+1 50 35 35 35 130
+1 50 35 35 35 130
+1 50 35 35 35 130
+1

@@ -2,6 +2,7 @@
 #include "Fleet.h"
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
 using namespace std;
 
@@ -58,6 +59,19 @@ int Fleet::loadEquip(int fleetEquip[][4], Equip* equipList)
         }
     }
 
+    return 0;
+}
+
+int Fleet::loadShipLv(int shipLv[])
+{
+    for (int i = 0; i < shipAmountOrg; i++)
+    {
+        ship[i].lv = shipLv[i];
+
+        ship[i].accurate = (int)round(ship[i].accurate*ship[i].lv / 100.0);
+        ship[i].dodge = (int)round(ship[i].dodge*ship[i].lv / 100.0);
+        ship[i].toss = (int)round(ship[i].toss*ship[i].lv / 100.0);
+    }
     return 0;
 }
 

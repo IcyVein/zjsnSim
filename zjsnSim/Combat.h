@@ -21,6 +21,7 @@ public:
     STAGE Torpedo();
     STAGE Night();
     int Results();
+    int shell();
     double resultsBar(Fleet* fleet);
 
     int setAttackShip(int, Fleet*);

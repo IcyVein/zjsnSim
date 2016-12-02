@@ -15,6 +15,7 @@ Ship::Ship()
     no = 0;
     name = "нч";
     type = 0;
+    lv = 100;
     maxHP = 0;
     speed = 0;
     range = 0;
@@ -44,18 +45,21 @@ Ship::Ship()
     attackAmount = 1;
     randModMin = 0.89;
     randModMax = 1.22;
+    randModMinNight = 1.20;
+    randModMaxNight = 1.80;
 
     currHP = 0;
     currAmmunition = 0;
     currOil = 0;
 }
 
-Ship::Ship(int _no, string _name, int _type, int _maxHP, double _speed, int _range, int _equipSlot,
-    int _firePower, int _torpedo, int _armor, int _antiAircraft, int _dodge, int _antiSubmarine, int _toss, int _lucky,
+Ship::Ship(int _no, string _name, int _type, int _lv, int _maxHP, double _speed, int _range, int _equipSlot,
+    int _firePower, int _torpedo, int _armor, int _antiAircraft, int _accurate, int _dodge, int _antiSubmarine, int _toss, int _lucky,
     int _ammunition, int _oil, int _capacity[5])
 {
     no = _no;
     name = _name;
+    lv = _lv;
     type = _type;
     maxHP = _maxHP;
     speed = _speed;
@@ -67,7 +71,7 @@ Ship::Ship(int _no, string _name, int _type, int _maxHP, double _speed, int _ran
     bomb = 0;
     armor = _armor;
     antiAircraft = _antiAircraft;
-    accurate = 90;
+    accurate = _accurate;
     dodge = _dodge;
     antiSubmarine = _antiSubmarine;
     toss = _toss;
@@ -86,6 +90,8 @@ Ship::Ship(int _no, string _name, int _type, int _maxHP, double _speed, int _ran
     attackAmount = 1;
     randModMin = 0.89;
     randModMax = 1.22;
+    randModMinNight = 1.20;
+    randModMaxNight = 1.80;
 
     currHP = _maxHP;
     currAmmunition = _ammunition;
@@ -101,6 +107,7 @@ Ship Ship::operator=(Ship currShip)
     no = currShip.no;
     name = currShip.name;
     type = currShip.type;
+    lv = currShip.lv;
     maxHP = currShip.maxHP;
     speed = currShip.speed;
     range = currShip.range;
@@ -129,6 +136,8 @@ Ship Ship::operator=(Ship currShip)
     attackAmount = currShip.attackAmount;
     randModMin = currShip.randModMin;
     randModMax = currShip.randModMax;
+    randModMinNight = currShip.randModMinNight;
+    randModMaxNight = currShip.randModMaxNight;
 
     currHP = currShip.currHP;
     currAmmunition = currShip.currAmmunition;
@@ -143,7 +152,7 @@ int loadShipList(string shipListPath, Ship* ship)
     while (!shipListFile.eof())
     {
         shipListFile >> currShip.no >> currShip.name >> currShip.type >> currShip.maxHP >> currShip.speed >> currShip.range >> currShip.equipSlot
-            >> currShip.firePower >> currShip.torpedo >> currShip.armor >> currShip.antiAircraft >> currShip.dodge >> currShip.antiSubmarine >> currShip.toss >> currShip.lucky
+            >> currShip.firePower >> currShip.torpedo >> currShip.armor >> currShip.antiAircraft >> currShip.accurate >> currShip.dodge >> currShip.antiSubmarine >> currShip.toss >> currShip.lucky
             >> currShip.ammunition >> currShip.oil 
             >> currShip.capacity[0] >> currShip.capacity[1] >> currShip.capacity[2] >> currShip.capacity[3] >> currShip.capacity[4];
 
@@ -157,11 +166,7 @@ int loadShipList(string shipListPath, Ship* ship)
         currShip.currHP = currShip.maxHP;
         currShip.currAmmunition = currShip.ammunition;
         currShip.currOil = currShip.oil;
-        //if (currShip.capacity[0] != 0 && (currShip.type == 1 || currShip.type == 2)) // CV|Cvl
-        //{
-        //    for (int i = 1; i < 5; i++)
-        //        shipListFile >> currShip.capacity[i];
-        //}
+
         ship[currShip.no] = currShip;
     }
     shipListFile.close();
@@ -225,7 +230,9 @@ double Ship::getAttackPower(STAGE stage)
     double attackPower = 0;
     double hpMod = 1.0;
     double ammunitionMod = 1.0;
-    double randMod = randR(randModMin, randModMax);
+    double currRandModMin = stage == NIGHT ? randModMinNight : randModMin;
+    double currRandModMax = stage == NIGHT ? randModMaxNight : randModMax;
+    double randMod = randR(currRandModMin, currRandModMax);
     attackPower = (firePower + 5)*hpMod*ammunitionMod*randMod;
 
     return attackPower;
