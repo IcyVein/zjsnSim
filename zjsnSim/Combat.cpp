@@ -72,11 +72,19 @@ int Combat::shell()
     double myFormationMod = formationCoef(myFormation, stage);
     double opFormationMod = formationCoef(opFormation, stage);
     double damageOrg = 0.0;
+    int currSkill = 0;
+    double skillMod = 1.0;
     for (int i = 0; i < 6; i++)
     {
         // 我方attack
         if (myFleet->fireAble[setAttackShip(i, myFleet)-1] == 1) // 选择我方开火舰船并检查是否能够开火
         {
+            if (attackShip->skill == 8 && randR() <= 0.20 && stage != NIGHT) // Big 7
+            {
+                attackShip->attackAmount = 2;
+                currSkill = attackShip->skill;
+                skillMod = 1.16;
+            }
             setDefenseShip(attackShip->getAttackAmount(stage), opFleet);
             for (int j = 0; j < defenseShipAmount; j++)
             {
@@ -97,11 +105,16 @@ int Combat::shell()
                     critMod = 1.0;
                     //combatLog << "hit";
                 }
-                attackPower = attackShip->getAttackPower(stage)*courseMod*myFormationMod*critMod;
+                attackPower = attackShip->getAttackPower(stage)*courseMod*myFormationMod*critMod*skillMod;
                 armorPower = defenseShip[j]->armor * (1.0 - attackShip->pierce);
                 damageOrg = damage(attackPower, armorPower);
                 int tempHP = defenseShip[j]->currHP;
                 employDamageToEnemy(damageOrg, defenseShip[j]);
+                if (currSkill != 0) // 本轮攻击发动过技能
+                {
+                    currSkill = 0;
+                    skillMod = 1.0;
+                }
                 //combatLog << damageOrg << "( " << tempHP << "-->" << defenseShip[j]->currHP << " )" << endl;
             }
             opFleet->checkFireAble(stage);

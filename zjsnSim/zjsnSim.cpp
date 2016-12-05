@@ -62,6 +62,8 @@ int main()
     loadShipList(opShipListPath, opShipList);
     loadEquipList(opEquipListPath, opEquipList);
 
+    int repairConsumption[2] = { 0 };
+    int lossHP = 0;
     for (int i = 0; i < nMax; i++)
     {
         if (i%100 == 0)
@@ -74,17 +76,21 @@ int main()
         Fleet* opFleet = new Fleet(opFleetNo, 6, opShipList);
         opFleet->loadShipLv(opFleetLv);
         opFleet->loadEquip(opFleetEquip, opEquipList);
-        Combat combat = Combat(myFleet, opFleet, (bool)pveProtect, combatLog);
+        Combat combat = Combat(myFleet, opFleet, (bool)(pveProtect == 1), combatLog);
         combat.Combating();
+        lossHP += myFleet->repair(repairConsumption);
         myFleet->~Fleet();
         opFleet->~Fleet();
     }
-    
+    outputStream << "Repair Consumption per combat" << endl
+        << "Oil: " << repairConsumption[0] / (double)nMax
+        << "Steel: " << repairConsumption[1] / (double)nMax << endl
+        << "Loss HP per combat: " << lossHP / (double)nMax << endl;
 
     time_t t1 = time(NULL);
-    int timeConsumptionAll = t1 - t0;
-    int timeConsumptionMin = timeConsumptionAll / 60;
-    int timeConsumptionSec = timeConsumptionAll - timeConsumptionMin * 60;
+    time_t timeConsumptionAll = t1 - t0;
+    time_t timeConsumptionMin = timeConsumptionAll / 60;
+    time_t timeConsumptionSec = timeConsumptionAll - timeConsumptionMin * 60;
     outputStream << "The time consumption: " << timeConsumptionMin << "m" << timeConsumptionSec << "s." << endl;
     combatLog.close();
     outputStream.close();

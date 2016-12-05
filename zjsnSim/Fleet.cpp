@@ -105,3 +105,18 @@ int Fleet::checkFireAble(STAGE stage)
 
     return 0;
 }
+
+int Fleet::repair(int* repairConsumption)
+{
+    int lossHP = 0;
+    int repairShipConsumption[2] = { 0 };
+
+    for (int i = 0; i < shipAmountOrg; i++)
+    {
+        lossHP += ship[i].repair(repairShipConsumption);
+        repairConsumption[0] += repairShipConsumption[0];
+        repairConsumption[1] += repairShipConsumption[1];
+    }
+
+    return lossHP;
+}

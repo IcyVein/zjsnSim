@@ -7,6 +7,7 @@
 #include "Ship.h"
 #include "Equip.h"
 #include <ctime>
+#include <cmath>
 
 using namespace std;
 
@@ -51,11 +52,16 @@ Ship::Ship()
     currHP = 0;
     currAmmunition = 0;
     currOil = 0;
+
+    skill = 0;
+    repairConsumptionOil = 0.0;
+    repairConsumptionSteel = 0.0;
 }
 
 Ship::Ship(int _no, string _name, int _type, int _lv, int _maxHP, double _speed, int _range, int _equipSlot,
     int _firePower, int _torpedo, int _armor, int _antiAircraft, int _accurate, int _dodge, int _antiSubmarine, int _toss, int _lucky,
-    int _ammunition, int _oil, int _capacity[5])
+    int _ammunition, int _oil, int _capacity[5], int _skill, 
+    double _repairConsumptionOil, double _repairConsumptionSteel)
 {
     no = _no;
     name = _name;
@@ -96,6 +102,10 @@ Ship::Ship(int _no, string _name, int _type, int _lv, int _maxHP, double _speed,
     currHP = _maxHP;
     currAmmunition = _ammunition;
     currOil = _oil;
+
+    skill = _skill;
+    repairConsumptionOil = _repairConsumptionOil;
+    repairConsumptionSteel = _repairConsumptionSteel;
 }
 
 Ship::~Ship()
@@ -142,6 +152,10 @@ Ship Ship::operator=(Ship currShip)
     currHP = currShip.currHP;
     currAmmunition = currShip.currAmmunition;
     currOil = currShip.currOil;
+
+    skill = currShip.skill;
+    repairConsumptionOil = currShip.repairConsumptionOil;
+    repairConsumptionSteel = currShip.repairConsumptionSteel;
     return *this;
 }
 
@@ -153,8 +167,9 @@ int loadShipList(string shipListPath, Ship* ship)
     {
         shipListFile >> currShip.no >> currShip.name >> currShip.type >> currShip.maxHP >> currShip.speed >> currShip.range >> currShip.equipSlot
             >> currShip.firePower >> currShip.torpedo >> currShip.armor >> currShip.antiAircraft >> currShip.accurate >> currShip.dodge >> currShip.antiSubmarine >> currShip.toss >> currShip.lucky
-            >> currShip.ammunition >> currShip.oil 
-            >> currShip.capacity[0] >> currShip.capacity[1] >> currShip.capacity[2] >> currShip.capacity[3] >> currShip.capacity[4];
+            >> currShip.ammunition >> currShip.oil
+            >> currShip.capacity[0] >> currShip.capacity[1] >> currShip.capacity[2] >> currShip.capacity[3] >> currShip.capacity[4] >> currShip.skill
+            >> currShip.repairConsumptionOil >> currShip.repairConsumptionSteel;
 
         currShip.crit = 0.05;
         currShip.critDamageMod = 1.50;
@@ -192,7 +207,7 @@ int Ship::showShip(ofstream& outputFile)
         << firePower << " " << torpedo << " " << armor << " " << antiAircraft << " " << accurate << " " << dodge << " " << antiSubmarine << " " << toss << " " << lucky << " "
         << ammunition << " " << oil << " " 
         << capacity[0] << " " << capacity[1] << " " << capacity[2] << " " << capacity[3] << " " << capacity[4] << " " 
-        << pierce;
+        << pierce << skill;
 
     outputFile << endl;
     return 0;
@@ -200,7 +215,7 @@ int Ship::showShip(ofstream& outputFile)
 
 int Ship::loadEquip(Equip equip)
 {
-    range = fmax(range, equip.range);
+    range = (int)fmax(range, equip.range);
 
     firePower += equip.firePower;
     torpedo += equip.torpedo;
@@ -236,4 +251,13 @@ double Ship::getAttackPower(STAGE stage)
     attackPower = (firePower + 5)*hpMod*ammunitionMod*randMod;
 
     return attackPower;
+}
+
+int Ship::repair(int* repairConsumption)
+{
+    int lossHP = maxHP - currHP;
+    repairConsumption[0] = (int)ceil((maxHP - currHP)*repairConsumptionOil);
+    repairConsumption[1] = (int)ceil((maxHP - currHP)*repairConsumptionSteel);
+    currHP = maxHP;
+    return lossHP;
 }

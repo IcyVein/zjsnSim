@@ -20,6 +20,8 @@ public:
 
     int checkAlive();
     int checkFireAble(STAGE stage);
+
+    int repair(int* repairConsumption);
 public:
     int shipAmount;
     int shipAmountOrg;
