@@ -81,17 +81,6 @@ int main()
     }
     
 
-    //myFleet->showFleet(outputStream);
-    //opFleet->showFleet(outputStream);
-    //myFleet->loadEquip(myFleetEquip, myEquipList);
-    //opFleet->loadEquip(opFleetEquip, opEquipList);
-    //myFleet->showFleet(outputStream);
-    //opFleet->showFleet(outputStream);
-    //Combat combat = Combat(myFleet, opFleet, true, combatLog);
-    //combat.Combating();
-    //myFleet->showFleet(outputStream);
-    //opFleet->showFleet(outputStream);
-
     time_t t1 = time(NULL);
     int timeConsumptionAll = t1 - t0;
     int timeConsumptionMin = timeConsumptionAll / 60;
